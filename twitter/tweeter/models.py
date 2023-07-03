@@ -4,7 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
-class tweet(models.Model):
+class Tweet(models.Model):
     user = models.ForeignKey(
         User, related_name="tweet",
         on_delete=models.DO_NOTHING
