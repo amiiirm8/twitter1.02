@@ -1,9 +1,12 @@
 from django.shortcuts import redirect, render
 from .models import Profile
 from django.contrib import messages
-from .forms import TweetForm
+from .forms import TweetForm, SignUpForm
 from .models import Tweet
 from django.contrib.auth import authenticate, login,logout
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from django.contrib.auth.models import User
 
 
 
@@ -74,3 +77,43 @@ def logout_user(request):
     logout(request)
     messages.success(request, ("You Have Been Logged Out."))
     return redirect('home')
+
+
+def register_user(request):
+    form = SignUpForm()
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+           form.save() 
+           username = form.cleaned_data['username']
+           password = form.cleaned_data['password1']
+           first_name = form.cleaned_data['first_name']
+           last_name = form.cleaned_data['last_name']
+           email = form.cleaned_data['email']
+           user = authenticate(username=username, password=password)
+           login(request,user)
+           messages.success(request, ("You Have successfully registered! welcome."))
+           return redirect('home')
+        
+    return render(request, "register.html", {'form':form})
+
+
+def update_user(request):
+    if request.user.is_authenticated:
+        current_user = User.objects.get(id=request.user.id)
+        form = SignUpForm(request.POST or None, instance=current_user)
+        if form.is_valid():
+            form.save()
+            login(request, current_user)
+            messages.success(request, ("You Profile Has Been Updated."))
+            return redirect('home')
+
+
+
+
+        return render(request, "update_user.html", {'form':form})
+
+    else:
+        messages.success(request, ("You Must Be Logged In To View That Page... "))
+        return redirect('home')
+
