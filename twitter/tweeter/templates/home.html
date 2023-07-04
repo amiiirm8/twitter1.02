@@ -30,6 +30,14 @@
             <small class="text-muted">
                 {{ tweet.created_at}} By 
                 @{{tweet.user.username}}
+                - {{ tweet.number_of_likes }} Likes - 
+                {% if user in tweet.likes.all  %}
+                <a href="{% url 'tweet_like' tweet.id %}">UnLike</a>
+                {% else %}
+                <a href="{% url 'tweet_like' tweet.id %}">Like</a>
+                {% endif %}
+
+
             </small>
         </div><br/><br/>
 
