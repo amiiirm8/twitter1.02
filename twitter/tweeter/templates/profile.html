@@ -16,13 +16,13 @@
         <div class="row">
             <div class="col-1">
                 {% if profile.profile_img %}
-                <img src="{{ rofile.profile_image.url }}"
+                <img src="{{ profile.profile_image.url }}"
                 width="50px" height"50" class="rounded-circle " 
                 alt="{{ profile.user.username}}">
 
                 {% else %}
                 <img style="width: 50px; height: 50px; border-radius: 50% ;"
-                src="{{ profile.profile_image.url  }}
+                src="{{ profile.profile_image.url  }}"
                 alt="{{ profile.user.username}}">
                 {% endif %}
               </div>
@@ -31,6 +31,14 @@
                                   <small class="text-muted">
                                       {{ tweet.created_at}} By 
                                       @{{tweet.user.username}}
+                                      - {{ tweet.number_of_likes }} Likes -
+                                      {% if user in tweet.likes.all  %}
+                                        <a href="{% url 'tweet_like' tweet.id %}">UnLike</a>
+                                        {% else %}
+                                        <a href="{% url 'tweet_like' tweet.id %}">Like</a>
+                                        {% endif %}
+              
+
                                   </small>
                                 </div><br/><br/>
               </div>

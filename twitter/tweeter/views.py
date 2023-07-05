@@ -124,8 +124,9 @@ def tweet_like(request, pk):
 			tweet.likes.remove(request.user)
 		else:
 			tweet.likes.add(request.user)
+                        
 		
-		return redirect('home')
+		return redirect(request.META.get("HTTP_REFERER"))
 
 
 
