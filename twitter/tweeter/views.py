@@ -117,6 +117,7 @@ def update_user(request):
         messages.success(request, ("You Must Be Logged In To View That Page... "))
         return redirect('home')
 
+
 def tweet_like(request, pk):
 	if request.user.is_authenticated:
 		tweet = get_object_or_404(Tweet, id=pk)
