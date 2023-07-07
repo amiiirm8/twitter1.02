@@ -2,7 +2,7 @@
 Twitter Social Network Project with Python &amp; Django Framework
 This project is a social network platform built using Django. The purpose of this project is to create a platform where users can create posts, comment on posts, and interact with other users in a social setting. The platform will allow users to share their thoughts, ideas, and opinions with a wider audience and engage in conversations on various topics.
 # photo
-![alt ERD ]((https://github.com/amiiirm8/twitter1.02)/blob/main/twitter.jpg?raw=true)
+<img src="../twitter.jpg" >
 # features
 The social network platform will have the following features:
 User registration and login: Users can create an account and login to the platform using their email and password.
