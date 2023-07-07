@@ -127,6 +127,9 @@
                       </p>
 
                     </div>
+                    <div class="card-footer">
+                      <a href="{% url 'follows' profile.user.id %}" class="btn btn-sm btn-outline-secondary ">see all </a>
+                    </div>
                   </div>
                
                 <br/><br/>
@@ -162,7 +165,7 @@
 
                     </div>
                     <div class="card-footer">
-                      <a href="{% url 'followers' profile.user.id %}">see all </a>
+                      <a href="{% url 'followers' profile.user.id %}" class="btn btn-sm btn-outline-secondary ">see all </a>
                     </div>
             
                   </div>
