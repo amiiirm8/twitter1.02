@@ -216,5 +216,16 @@ def tweet_show(request, pk):
         return redirect('home')
 
          
-
-
+def delete_tweet(request, pk):
+    if request.user.is_authenticated:
+        tweet = get_object_or_404(Tweet, id=pk)
+        if request.user.username == tweet.user.username:
+            tweet.delete()
+            messages.success(request, ("Tweet has been deleted "))
+            return redirect(request.META.get("HTTP_REFERER"))
+        else:
+            messages.success(request, ("You don't own that tweet"))
+            return redirect('home')
+    else:
+        messages.success(request, ("Please log in to continue .."))
+        return redirect(request.META.get("HTTP_REFERER"))
