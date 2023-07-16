@@ -19,7 +19,7 @@ Post likes: Users can like posts to show their appreciation for the content.
 ## How to Run?
 1. Clone the Project
 ```
-git clone https://github.com/SepehrBazyar/Shopping.git
+git clone https://github.com//amiiirm8/twitter1.02
 ```
 2. Create a Virtual Environment("venv" is a Selective Name).
 ```
