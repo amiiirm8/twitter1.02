@@ -1,0 +1,12 @@
+{% for comment in comments %}
+    <div class="media my-3">
+        <img src="{{ comment.user.profile.image.url }}" class="mr-3 rounded-circle" width="50" height="50" alt="User Avatar">
+        <div class="media-body">
+            <h6 class="mt-0">@{{ comment.user.username }}</h6>
+            <p>{{ comment.content }}</p>
+            <p><small class="text-muted">{{ comment.timestamp|date }}</small></p>
+        </div>
+    </div>
+{% empty %}
+    <p>There are no comments yet.</p>
+{% endfor %}
