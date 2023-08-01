@@ -5,8 +5,14 @@
 {% if profile %}
     <div class="container text-center">
         <div class="row">
+          
             <div class="col-8">
+              
                 <h1>{{ profile.user.username}}'s Profile </h1>
+
+                      
+                
+            
                 <br/>
 
                 {% if tweets %}
@@ -25,7 +31,9 @@
                 src="{{ profile.profile_image.url}}"
                 alt="{{ profile.user.username}}">
                 {% endif %}
+                
               </div>
+              
               <div class="col-11">
                                 {{ tweet.body }}<br/>
                                   <small class="text-muted">
@@ -59,11 +67,14 @@
                                           <i class="fa fa-edit" style="color:gray;"></i>
                                         </a>
                                       {% endif %}
+                                      
+                                      
                                         
               
 
                                   </small>
                                 </div><br/><br/>
+                                
               </div>
         </div>
     </div>
@@ -81,7 +92,7 @@
 
                     <div>
                       {% endif %}
-                            {% if profile.Website_link %}
+                            {% if profile.website_link %}
                             <a href="{{ profile.Website_link }}" target="new">
                                 <i class="fa-solid fa-link" style="color:gray"></i>
                             </a>
@@ -93,7 +104,7 @@
                             </a>
                             {% endif %}
                             &nbsp;&nbsp;
-                            {% if profile.Instagram_link %}
+                            {% if profile.instagram_link %}
                             <a href="{{ profile.Instagram_link }}" target="new">
                                 <i class="fa-brands fa-instagram" style="color:gray"></i>
                             </a>
@@ -106,12 +117,14 @@
                             {% endif %}
                     <br/><br/>
                   
-                    {% if profile.profile_bio %}
-                      <p align= "justify">
-                        {{profile.profile_bio}}
-                      </p>
-                    {% endif %}
-
+                      {% if profile.profile_bio %}
+                      <div class="card">
+                          <div class="card-body">
+                              <h3 class="card-title"></h3>
+                              <p class="card-text">{{ profile.profile_bio }}</p>
+                          </div>
+                      </div>
+                      {% endif %}
 
 
 
@@ -201,7 +214,7 @@
           <br/>
 
             {% if request.user.id == profile.user.id  %}
-              <a href="{% url 'update_user' %}" class="btn 
+              <a href="{% url 'edit_profile' %}" class="btn 
               btn-outline-secondary">Update Profile</a>
             {% endif %}
             </div>

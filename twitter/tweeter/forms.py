@@ -1,51 +1,85 @@
 from typing import Any
 from django import forms
-from .models import Tweet, Profile
+from .models import Comment, Tweet, Profile 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.forms.widgets import ClearableFileInput, CheckboxSelectMultiple, MultipleHiddenInput, SelectMultiple
 
 
 class ProfilePicForm(forms.ModelForm):
-    profile_image = forms.ImageField(label="Profile Picture")
+    profile_image = forms.ImageField(label="Profile Picture", required=False)
+    profile_bio = forms.CharField(label="Profile Bio", widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Profile Bio'}), required=False)
+    website_link = forms.CharField(label="", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'website Link'}), required=False)
+    facebook_link = forms.CharField(label="", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'facebook Link'}), required=False)
+    instagram_link = forms.CharField(label="", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'instagram Link'}), required=False)
+    linkedin_link = forms.CharField(label="Linkedin Link", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'linkedin Link'}), required=False)
+    username = forms.CharField(max_length=30, required=False)
+    first_name = forms.CharField(max_length=30, required=False)
+    last_name = forms.CharField(max_length=30, required=False)
+    email = forms.EmailField(required=False)
 
-    profile_bio =  forms.CharField(label="Profile Bio",widget=forms.Textarea(attrs={'class':'form-control','placeholder':'Profile Bio'}))
-    Website_link = forms.CharField(label="",widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Website Link'}))
-    facebook_link = forms.CharField(label="",widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Facebook Link'}))
-    Instagram_link = forms.CharField(label="",widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Instagram Link'}))
-    linkedin_link = forms.CharField(label="Linkedin Link",widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Linkedin Link'}))
 
-
-    
     class Meta:
-        model = Profile 
-        fields = ('profile_image','profile_bio','Website_link','facebook_link','Instagram_link','linkedin_link', )
+        model = Profile
+        fields = ('profile_image', 'profile_bio', 'website_link', 'facebook_link', 'instagram_link', 'linkedin_link', 'username', 'first_name', 'last_name', 'email')
+
+
 
 class TweetForm(forms.ModelForm):
-    body = forms.CharField(required=True,
-        widget= forms.widgets.Textarea(
+    body = forms.CharField(
+        required=True,
+        widget=forms.widgets.Textarea(
             attrs={
-            "placeholder": "Enter Your Tweet! ",
-            "class" : "form-control",
+                "placeholder": "Enter Your Tweet! ",
+                "class": "form-control",
             }
-            ), 
-            label = "",                 
-        )
+        ),
+        label="",
+    )
+
+    def __init__(self, *args, **kwargs):
+        user_profile = kwargs.pop('userprofile', None)
+        admin_profile = kwargs.pop('adminprofile', None)
+        super().__init__(*args, **kwargs)
+        if user_profile:
+            self.fields['body'].widget.attrs.update({'placeholder': 'What\'s happening?'})
+        elif admin_profile:
+            self.fields['body'].widget.attrs.update({'placeholder': 'Post an announcement'})
+
     class Meta:
         model = Tweet
-        exclude = ("user", "likes")
+        fields = ('body',)
+        widgets = {
+            'body': forms.Textarea(attrs={'rows': 3}),
+        }
 
 
-class SignUpForm(UserCreationForm):
-    email = forms.EmailField(label="", widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Email Address'}))
-    first_name = forms.CharField(label="", max_length=100 ,widget=forms.TextInput(attrs={'class':'form-control','placeholder':'First Name'}))
-    last_name = forms.CharField(label="", max_length=100 ,widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Last Name'}))
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+
+
+
+
+class CustomUserCreationForm(UserCreationForm):
+    username= forms.CharField(widget=forms.TextInput(attrs={'class':'form-control form-control-lg', 'placeholder':"Enter Username" }), required=True)
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control form-control-lg', 'placeholder':"Enter a valid email" }), required=True)
+    first_name= forms.CharField(widget=forms.TextInput(attrs={'class':'form-control form-control-lg', 'placeholder':"Enter your first name" }), required=True)
+    last_name= forms.CharField(widget=forms.TextInput(attrs={'class':'form-control form-control-lg', 'placeholder':"Enter your last name" }), required=True)
+    profile_bio= forms.CharField(max_length=300 ,widget=forms.Textarea(attrs={'class':'form-control form-control-lg', 'placeholder':"Write a Bio" }), required=True)
+    birthdate= forms.DateField(initial="2023-07-21", widget=forms.SelectDateWidget(years=[x for x in range(1940,2024)]), required=False)
+    profile_image = forms.ImageField(required=False, widget=forms.FileInput())
 
     class Meta:
         model = User
-        fields = ('username', 'first_name','last_name', 'email', 'password1', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
 
-    def __init__(self, *args: Any, **kwargs: Any):
-        super(SignUpForm, self).__init__(*args, **kwargs) 
+    def __init__(self, *args, **kwargs):
+        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
 
         self.fields['username'].widget.attrs['class'] = 'form-control'
         self.fields['username'].widget.attrs['placeholder'] = 'User Name'
@@ -61,3 +95,8 @@ class SignUpForm(UserCreationForm):
         self.fields['password2'].widget.attrs['placeholder'] = 'Confirm Password'
         self.fields['password2'].label = ''
         self.fields['password2'].help_text = '<span class="form-text text-muted"><small>Enter the same password as before, for verification.</small></span>'
+
+class LoginForm(forms.Form):
+    
+    username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control form-control-lg', 'placeholder':"Enter Username" }), required=True)
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control form-control-lg', 'placeholder':"Enter Password"}))
