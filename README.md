@@ -32,44 +32,46 @@ make sure you have the following requirements:
     Other dependencies listed in the requirements.txt file
     
 ## How to Run?
-1. Clone the Project
-```
-git clone https://github.com/amiiirm8/twitter1.02
-```
-2. Create a Virtual Environment
-```
-python3 -m venv venv
-```
-3. Activate the Interpreter of the Virtual Environment
-    * Windows:
+    1. Clone the Project
     ```
-    venv\Script\active
+    git clone https://github.com/amiiirm8/twitter1.02
     ```
-    * Linux/Mac os:
+    2. Create a Virtual Environment
     ```
-    source venv/bin/active
+    python3 -m venv venv
     ```
-4. Install the Requirements
-```
-pip install -r requirements.txt
-```
+    3. Activate the Interpreter of the Virtual Environment
+        * Windows:
+        ```
+        venv\Script\active
+        ```
+        * Linux/Mac os:
+        ```
+        source venv/bin/active
+        ```
+    4. Install the Requirements
+    ```
+    pip install -r requirements.txt
+    ```
+    
+    5. Run the migrations
+    '''
+    python3 manage.py makemigrations
+    
+    python3 manage.py migrate
+    
+    '''
+    6. Create a superuser account
+    '''
+    python manage.py createsuperuser
+    '''
+    7. Write the Following Command to Run the Server
+    ```
+    python manage.py runserver
+    '''
 
-5. Run the migrations
-'''
-python3 manage.py makemigrations
 
-python3 manage.py migrate
-
-'''
-6. Create a superuser account
-'''
-python manage.py createsuperuser
-'''
-7. Write the Following Command to Run the Server
-```
-python manage.py runserver
-
-## license
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
